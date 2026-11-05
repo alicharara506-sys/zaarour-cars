@@ -1,0 +1,61 @@
+[build]
+  command = "pnpm --filter @workspace/zaarour run build:static"
+  publish = "artifacts/zaarour/dist/public"
+
+[build.environment]
+  NODE_VERSION = "24"
+  PORT = "5173"
+  BASE_PATH = "/"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  included_files = ["artifacts/zaarour/dist/public/shell.html", "artifacts/zaarour/dist/public/seo-data.json"]
+
+[[redirects]]
+  from = "/"
+  to = "/.netlify/functions/seo?path="
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/cars"
+  to = "/.netlify/functions/seo?path=cars"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/cars/:slug"
+  to = "/.netlify/functions/seo?path=cars/:slug"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/about"
+  to = "/.netlify/functions/seo?path=about"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/contact"
+  to = "/.netlify/functions/seo?path=contact"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/.netlify/functions/seo?path=sitemap.xml"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"

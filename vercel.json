@@ -1,0 +1,29 @@
+{
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm --filter @workspace/zaarour run build:static",
+  "outputDirectory": "artifacts/zaarour/dist/public",
+  "cleanUrls": true,
+  "functions": {
+    "api/seo.mjs": {
+      "includeFiles": "artifacts/zaarour/dist/public/{shell.html,seo-data.json}"
+    }
+  },
+  "rewrites": [
+    { "source": "/", "destination": "/api/seo?path=" },
+    { "source": "/cars", "destination": "/api/seo?path=cars" },
+    { "source": "/cars/:slug", "destination": "/api/seo?path=cars/:slug" },
+    { "source": "/about", "destination": "/api/seo?path=about" },
+    { "source": "/contact", "destination": "/api/seo?path=contact" },
+    { "source": "/sitemap.xml", "destination": "/api/seo?path=sitemap.xml" },
+    { "source": "/admin/:path*", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ZAAROUR — Premium Cars in Lebanon"
+description = "Premium automotive showroom for ZAAROUR in Moawad, Lebanon, with an interactive 3D hero, searchable USD inventory, detailed vehicle pages, WhatsApp contact and Supabase-ready administration."
+version = "1.0.0"
+id = "artifacts/zaarour"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23525
+
+[services.development]
+run = "pnpm --filter @workspace/zaarour run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/zaarour", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/zaarour/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23525"
+BASE_PATH = "/"
